@@ -59,9 +59,22 @@ def show_temporal_analysis(df):
         # Seasonal patterns (if month data available)
         if 'founded_month' in df.columns:
             st.subheader("Seasonal Founding Patterns")
-            
+            # Extract month number from 'YYYY-MM' format
+            #df['Month'] = df['founded_month'].str.split('-').str[1].astype(int)  # Gets the '07' part and converts to 7
+
+            # Convert to string, handle nulls, then extract month
+            df['Month'] = (
+                df['founded_month']
+                .astype(str)  # Convert all to string first
+                .str.split('-')
+                .str[1]  # Get month part
+                .replace('nan', pd.NA)  # Handle 'nan' strings from nulls
+                .dropna()  # Remove nulls
+                .astype(int)  # Convert to integer
+            )
+
             # Count companies by founding month
-            month_counts = df['founded_month'].value_counts().sort_index().reset_index()
+            month_counts = df['Month'].value_counts().sort_index().reset_index()
             month_counts.columns = ['Month', 'Count']
             
             # Map month numbers to names

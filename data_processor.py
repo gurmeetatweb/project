@@ -316,7 +316,7 @@ def preprocess_data(df):
     categorical_cols = ['country_code', 'state_code', 'city', 'region', 'market', 'status']
     for col in categorical_cols:
         if col in df.columns:
-            df[col] = df[col].fillna('Other')
+            df[col] = df[col].fillna('Unknown')
     
     # Filter for India
     #df = df[df['country_code'].str.upper() == 'IND']

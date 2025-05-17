@@ -35,7 +35,7 @@ def show_geographic_analysis(df):
     
     with tab1:
         if 'country_code' in df.columns:
-            country_counts = df['country_code'].value_counts().reset_index()
+            country_counts = df['country_code'].drop(index=df[df['country_code'] == 'Unknown'].index).value_counts().reset_index()
             country_counts.columns = ['country_code', 'count']
             
             # Create world map
@@ -65,7 +65,7 @@ def show_geographic_analysis(df):
         # Get top countries
         top_countries = (
             df['country_code']
-            .drop(index=df[df['country_code'] == 'unknown'].index)  # Remove 'unknown' entries
+            .drop(index=df[df['country_code'] == 'Unknown'].index)  # Remove 'unknown' entries
             .value_counts()
             .nlargest(5)
             .index
@@ -231,7 +231,7 @@ def show_geographic_analysis(df):
         # Get top regions
         top_regions = (
             df['region']
-            .drop(index=df[df['region'] == 'unknown'].index)  # Remove 'unknown' entries
+            .drop(index=df[df['region'] == 'Unknown'].index)  # Remove 'unknown' entries
             .value_counts()
             .nlargest(5)
             .index

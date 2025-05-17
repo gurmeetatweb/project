@@ -8,6 +8,7 @@ from app_pages.category_analysis import show_category_analysis
 from app_pages.correlation_analysis import show_correlation_analysis
 from utils import set_page_config
 
+
 def main():
     # Set page configuration
     set_page_config()
@@ -52,8 +53,7 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.subheader("Global Filters")
     
-    # Year range filter
-    df = df[df['country_code'].str.upper() == 'IND']
+    # Year range filter    
     if 'founded_year' in df.columns and df['founded_year'].notna().any():
         min_year = int(df['founded_year'].min())
         max_year = int(df['founded_year'].max())
@@ -64,16 +64,19 @@ def main():
         df_filtered = df[(df['founded_year'] >= year_range[0]) & (df['founded_year'] <= year_range[1])]
     else:
         df_filtered = df
-    
+            
     # Funding range filter (log scale for better distribution)
     if 'funding_total_usd' in df.columns and df['funding_total_usd'].notna().any():
-        min_funding = float(df['funding_total_usd'].min())
-        max_funding = float(df['funding_total_usd'].max())
+        df_india = df.copy()
+        df_india = df_india[df_india['country_code'].str.upper() == 'IND']    
+        min_funding = float(df_india['funding_total_usd'].min())
+        max_funding = float(df_india['funding_total_usd'].max())
         funding_range = st.sidebar.slider(
-            "Total Funding Range ($)",
+            "Total Funding Range ($ millions)",
             min_funding, max_funding, (min_funding, max_funding),
-            format="$%.2f"
+            format="$%.2f"            
         )
+        
         df_filtered = df_filtered[
             (df_filtered['funding_total_usd'] >= funding_range[0]) & 
             (df_filtered['funding_total_usd'] <= funding_range[1])
@@ -102,10 +105,10 @@ def main():
         
         if "All" not in selected_status and selected_status:
             df_filtered = df_filtered[df_filtered['status'].isin(selected_status)]
-    
+    ''''''
     # Region/country filter
     if 'country_code' in df.columns and df['country_code'].notna().any():
-        top_countries = df['country_code'].value_counts().nlargest(10).index.tolist()
+        top_countries = df['country_code'].drop(index=df[df['country_code'] == 'Unknown'].index).value_counts().nlargest(10).index.tolist()
         selected_countries = st.sidebar.multiselect(
             "Countries",
             options=["All"] + top_countries,
@@ -114,13 +117,24 @@ def main():
         
         if "All" not in selected_countries and selected_countries:
             df_filtered = df_filtered[df_filtered['country_code'].isin(selected_countries)]
+
+    # Region/country filter
+    if 'region' in df.columns and df['region'].notna().any():
+        df_india = df[df['country_code'] == 'IND']
+        top_regions = df_india['region'].drop(index=df_india[df_india['region'] == 'Unknown'].index).value_counts().nlargest(10).index.tolist()
+        selected_regions = st.sidebar.multiselect(
+            "Regions",
+            options=["All"] + top_regions,
+            default=["All"]
+        )
+        
+        if "All" not in selected_regions and selected_regions:
+            df_filtered = df_filtered[df_filtered['region'].isin(selected_regions)]
     
     # Display selected page with filtered data
     if(selection != 'Geographic Distribution'):
-        df_filtered = df_filtered[df_filtered['country_code'].str.upper() == 'IND']
-
+        df_filtered = df_filtered[df_filtered['country_code'].str.upper() == 'IND']    
     
-    print(df_filtered['state'])
     pages[selection](df_filtered)
     
     # Footer
@@ -132,3 +146,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
