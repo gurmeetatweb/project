@@ -169,3 +169,4 @@ def main():
 if __name__ == "__main__":
     main()
 
+st.warning("⚠️ Note: All analysis reflects Indian startup data up to 2014 only")

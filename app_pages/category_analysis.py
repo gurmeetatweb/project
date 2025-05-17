@@ -397,3 +397,4 @@ def show_category_analysis(df):
         st.info("Category co-occurrence analysis requires preprocessing of category_list column. See overview for more information.")
     else:
         st.info("Category information not available in the dataset.")
+     
