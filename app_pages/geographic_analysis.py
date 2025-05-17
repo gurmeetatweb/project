@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from data_processor import filter_country
+
 from utils import (
     format_large_number,
     create_plotly_choropleth,
@@ -60,6 +60,31 @@ def show_geographic_analysis(df):
             st.plotly_chart(country_fig, use_container_width=True)
         else:
             st.info("Country information not available in the dataset.")
+    # Status distribution by country
+    if 'country_code' in df.columns and 'status' in df.columns:
+        # Get top countries
+        top_countries = (
+            df['country_code']
+            .drop(index=df[df['country_code'] == 'unknown'].index)  # Remove 'unknown' entries
+            .value_counts()
+            .nlargest(5)
+            .index
+            .tolist()
+        )
+        
+        # Filter to top countries
+        country_status_df = df[df['country_code'].isin(top_countries)]
+        
+        # Create grouped bar chart
+        fig = px.histogram(
+            country_status_df,
+            x='country_code',
+            color='status',
+            barmode='group',
+            title='Distribution of Company Status Across Top 5 Countries',
+            labels={'count': 'Number of Companies', 'country_code': 'Country', 'status': 'Status'}
+        )
+        st.plotly_chart(fig, use_container_width=True)            
     
     with tab2:
         if 'country_code' in df.columns and 'funding_total_usd' in df.columns:
@@ -179,76 +204,7 @@ def show_geographic_analysis(df):
     else:
         st.info("City information not available in the dataset.")
     
-    # State analysis (for US)
-    if 'country_code' in df.columns and 'state_code' in df.columns:
-        # Filter to US companies
-        us_df = df[df['country_code'] == 'IND']
-        
-        if not us_df.empty:
-            st.subheader("State Analysis")
-            
-            # Get state counts
-            state_counts = us_df['state'].value_counts().reset_index()
-            state_counts.columns = ['State', 'Count']
-            #shp_gdf = gpd.read_file('../input/india-gis-data/India States/Indian_states.shp')
-            #shp_gdf.head()
-            # Create US map
-            '''fig = px.choropleth(
-                state_counts,
-                locations='state',
-                locationmode='USA-states',
-                color='Count',
-                scope='usa',
-                color_continuous_scale='Blues',
-                title='Number of Startups by US State'
-            )
-            st.plotly_chart(fig, use_container_width=True)'''
-
-            #df1 = pd.read_csv("https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/active_cases_2020-07-17_0800.csv")
-            
-            fig = px.choropleth(
-                us_df,
-                geojson="https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson",
-                featureidkey='properties.ST_NM',
-                locations='region',
-                color='funding_total_usd',
-                color_continuous_scale='Reds'
-            )
-
-            fig.update_geos(fitbounds="locations", visible=False)
-
-            fig.show()
-            
-            # State funding analysis
-            if 'funding_total_usd' in us_df.columns:
-                # Group by state and calculate total funding
-                state_funding = us_df.groupby('state_code')['funding_total_usd'].sum().reset_index()
-                
-                # Create US map
-                funding_fig = px.choropleth(
-                    state_funding,
-                    locations='state_code',
-                    locationmode='USA-states',
-                    color='funding_total_usd',
-                    scope='usa',
-                    color_continuous_scale='Greens',
-                    title='Total Funding by US State (USD)'
-                )
-                st.plotly_chart(funding_fig, use_container_width=True)
-                
-                # Top states by funding
-                top_states = state_funding.sort_values('funding_total_usd', ascending=False).head(10)
-                
-                # Create bar chart
-                state_fig = create_bar_chart(
-                    top_states,
-                    'state_code',
-                    'funding_total_usd',
-                    'Top 10 US States by Total Funding',
-                    horizontal=True
-                )
-                st.plotly_chart(state_fig, use_container_width=True)
-    
+  
     # Cross-geographical analysis
     st.subheader("Cross-Geographical Analysis")
     
@@ -270,22 +226,29 @@ def show_geographic_analysis(df):
             labels={'count': 'Number of Companies', 'region': 'Region', 'market': 'Market'}
         )
         st.plotly_chart(fig, use_container_width=True)
-    
     # Status distribution by country
-    if 'country_code' in df.columns and 'status' in df.columns:
-        # Get top countries
-        top_countries = df['country_code'].value_counts().nlargest(5).index.tolist()
+    if 'region' in df.columns and 'status' in df.columns:
+        # Get top regions
+        top_regions = (
+            df['region']
+            .drop(index=df[df['region'] == 'unknown'].index)  # Remove 'unknown' entries
+            .value_counts()
+            .nlargest(5)
+            .index
+            .tolist()
+        )
         
         # Filter to top countries
-        country_status_df = df[df['country_code'].isin(top_countries)]
+        country_status_df = df[df['region'].isin(top_regions)]
         
         # Create grouped bar chart
         fig = px.histogram(
             country_status_df,
-            x='country_code',
+            x='region',
             color='status',
             barmode='group',
-            title='Distribution of Company Status Across Top 5 Countries',
-            labels={'count': 'Number of Companies', 'country_code': 'Country', 'status': 'Status'}
+            title='Distribution of Company Status Across Top 5 Regions',
+            labels={'count': 'Number of Companies', 'region': 'Region', 'status': 'Status'}
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)       
+    

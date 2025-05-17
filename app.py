@@ -1,11 +1,11 @@
 import streamlit as st
 from data_processor import load_data
-from pages.overview import show_overview
-from pages.funding_analysis import show_funding_analysis
-from pages.geographic_analysis import show_geographic_analysis
-from pages.temporal_analysis import show_temporal_analysis
-from pages.category_analysis import show_category_analysis
-from pages.correlation_analysis import show_correlation_analysis
+from app_pages.overview import show_overview
+from app_pages.funding_analysis import show_funding_analysis
+from app_pages.geographic_analysis import show_geographic_analysis
+from app_pages.temporal_analysis import show_temporal_analysis
+from app_pages.category_analysis import show_category_analysis
+from app_pages.correlation_analysis import show_correlation_analysis
 from utils import set_page_config
 
 def main():
@@ -53,6 +53,7 @@ def main():
     st.sidebar.subheader("Global Filters")
     
     # Year range filter
+    df = df[df['country_code'].str.upper() == 'IND']
     if 'founded_year' in df.columns and df['founded_year'].notna().any():
         min_year = int(df['founded_year'].min())
         max_year = int(df['founded_year'].max())

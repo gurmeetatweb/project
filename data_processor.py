@@ -38,15 +38,10 @@ def load_data():
                 # Remove commas and convert to numeric
                 df[col] = df[col].astype(str).str.replace(',', '').astype(float)
      # Check if data file exists
-    state_file = './data/city_state_mapping.json'
+    state_file = './data/city_state_mapping.csv'
     
+    df_state = pd.read_csv(state_file)
     
-    # First load the JSON as a dictionary
-    with open(state_file, 'r') as f:
-        state_data = json.load(f)
-
-    # Then convert to DataFrame
-    df_state = pd.DataFrame(list(state_data.items()), columns=['region', 'state'])
 
     master_list = [
         'Arunachal Pradesh', 'Assam', 'Chandigarh', 'Karnataka', 'Manipur',
@@ -58,6 +53,14 @@ def load_data():
         'Tamil Nadu', 'Uttar Pradesh', 'West Bengal', 'Andhra Pradesh', 'Puducherry',
         'Maharashtra'
     ]
+    '''
+    # First load the JSON as a dictionary
+    with open(state_file, 'r') as f:
+        state_file = dp json.load(f)
+
+    # Then convert to DataFrame
+    df_state = pd.DataFrame(list(state_data.items()), columns=['region', 'state'])
+
     city_state_map = dict(zip(df_state["region"], df_state["state"]))
     #df_city_state_map = pd.DataFrame.from_dict(city_state_map, orient='index').reset_index()
 
@@ -68,17 +71,20 @@ def load_data():
     #df_state_resolved[["region", "state"]] = df_state["region"].apply(get_resolver)
     # 4. Apply resolver correctly - fixed version
     resolved_data = df_state["region"].apply(resolver_func)
-    
+
+    # 5. Convert to DataFrame properly
+    #result_df = pd.DataFrame(resolved_data.tolist(), columns=['region', 'state'])
+
     # Convert the Series of Series to DataFrame
     df_state_resolved = pd.DataFrame({
         'region': resolved_data.apply(lambda x: x[0]),
         'state': resolved_data.apply(lambda x: x[1])
     })
-
+    '''
     
     df = pd.merge(
         df,
-        df_state_resolved[['region', 'state']],  # Select only columns we need
+        df_state[['region', 'state']],  # Select only columns we need
         on='region',
         how='left'  # Keeps all rows from full_df even if no match in state_df
     )                    
@@ -92,13 +98,30 @@ def load_data():
     return df
 
 def get_resolver(city_state_map, master_states):
-    # Function to resolve city to state with master list validation
+    # Convert master_states to set for faster lookup
+    master_set = set(master_states) if not isinstance(master_states, set) else master_states
+    
     def resolve_city_state(city):
-        if city in city_state_map:
-            state = city_state_map[city]
-            if state in master_states:
-                return pd.Series([city, state])
-        return pd.Series([city, None])  # Or default value
+        if pd.isna(city):  # Handle NaN/None values
+            return pd.Series([None, None])
+            
+        city_str = str(city).strip()  # Clean the city name
+        
+        # Check for direct match
+        if city_str in city_state_map:
+            state = city_state_map[city_str]
+            if state in master_set:
+                return pd.Series([city_str, state])
+        
+        # Check for case-insensitive match if needed
+        lower_map = {k.lower(): v for k, v in city_state_map.items()}
+        if city_str.lower() in lower_map:
+            state = lower_map[city_str.lower()]
+            if state in master_set:
+                return pd.Series([city_str, state])
+        
+        # Return original city and None state if not found
+        return pd.Series([city_str, None])
     
     return resolve_city_state
 
@@ -293,7 +316,7 @@ def preprocess_data(df):
     categorical_cols = ['country_code', 'state_code', 'city', 'region', 'market', 'status']
     for col in categorical_cols:
         if col in df.columns:
-            df[col] = df[col].fillna('Unknown')
+            df[col] = df[col].fillna('Other')
     
     # Filter for India
     #df = df[df['country_code'].str.upper() == 'IND']

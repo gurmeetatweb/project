@@ -13,8 +13,8 @@ def set_page_config():
     st.set_page_config(
         page_title="Startup Ecosystem Analysis",
         page_icon="📊",
-        layout="wide",
-        initial_sidebar_state="expanded",
+        layout="wide",        
+        initial_sidebar_state="expanded",        
     )
     
     # Custom CSS
@@ -58,7 +58,7 @@ def set_page_config():
             padding: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             margin-bottom: 20px;
-        }
+        }        
         </style>
     """, unsafe_allow_html=True)
 
