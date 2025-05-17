@@ -1,16 +1,18 @@
 import streamlit as st
 from PIL import Image
-
+import os
 def show_about_page(df):
     
     
     st.title("About the Developer")
     
-    # Developer photo (replace with your image path)
+    
+
     col1, col2 = st.columns([1, 2])
     with col1:
         try:
-            developer_img = Image.open(".\image\profile.png")  # or your image path
+            image_path = "./image/profile.png"
+            developer_img = Image.open(image_path)
             st.image(developer_img, width=200)
         except FileNotFoundError:
             st.image("https://via.placeholder.com/200", width=200)
