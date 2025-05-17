@@ -5,7 +5,7 @@ import plotly.express as px
 from utils import (
     create_pie_chart,
     create_bar_chart,
-    create_wordcloud,
+    #create_wordcloud,
     create_heatmap
 )
 
@@ -56,9 +56,9 @@ def show_category_analysis(df):
         )
         st.plotly_chart(market_bar_fig, use_container_width=True)
         
+        '''
         # Market word cloud
-        st.subheader("Market Word Cloud")
-        
+        st.subheader("Market Word Cloud")        
         # Create word cloud
         word_cloud_fig = create_wordcloud(
             df['market'],
@@ -66,6 +66,7 @@ def show_category_analysis(df):
             max_words=100
         )
         st.pyplot(word_cloud_fig)
+        '''
     else:
         st.info("Market information not available in the dataset.")
     

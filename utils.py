@@ -205,7 +205,7 @@ def create_heatmap(df, x_col, y_col, value_col, title):
     )
     
     return fig
-
+'''
 def create_wordcloud(text_series, title, max_words=100):
     """
     Create a word cloud visualization.
@@ -237,7 +237,7 @@ def create_wordcloud(text_series, title, max_words=100):
     ax.set_title(title, fontsize=16)
     
     return fig
-
+'''
 def create_time_series(df, time_col, value_col, title, color='#4F8BF9'):
     """
     Create a time series visualization.
