@@ -6,8 +6,9 @@ from app_pages.geographic_analysis import show_geographic_analysis
 from app_pages.temporal_analysis import show_temporal_analysis
 from app_pages.category_analysis import show_category_analysis
 from app_pages.correlation_analysis import show_correlation_analysis
+from app_pages.about import show_about_page
 from utils import set_page_config
-
+from PIL import Image
 
 def main():
     # Set page configuration
@@ -21,7 +22,7 @@ def main():
 
     # Sidebar navigation
     st.sidebar.title("Startup Analysis Dashboard")
-    
+
     # Add logo/icon
     st.sidebar.markdown("""
         <div style="text-align: center; margin-bottom: 20px;">
@@ -32,6 +33,8 @@ def main():
                 <path d="M17 20V8"></path>
                 <path d="M22 4v16h.01"></path>
             </svg>
+            +
+            <svg enable-background="new 0 0 128 128" width="50" height="50" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><linearGradient id="a"><stop offset=".4707" stop-color="#ef5451"/><stop offset=".8338" stop-color="#e53a35"/></linearGradient><radialGradient id="b" cx="46.895" cy="35.963" gradientUnits="userSpaceOnUse" r="62.182" xlink:href="#a"/><radialGradient id="c" cx="58.828" cy="53.686" gradientUnits="userSpaceOnUse" r="30.652" xlink:href="#a"/><circle cx="63.99" cy="64" fill="url(#b)" r="59.82"/><path d="m63.99 7.18c31.33 0 56.82 25.49 56.82 56.82s-25.49 56.82-56.82 56.82-56.82-25.49-56.82-56.82 25.49-56.82 56.82-56.82m0-3c-33.04 0-59.82 26.79-59.82 59.82s26.78 59.82 59.82 59.82 59.82-26.78 59.82-59.82-26.79-59.82-59.82-59.82z" fill="#434343" opacity=".2"/><circle cx="63.99" cy="64" fill="#fefce9" r="41.66"/><circle cx="63.99" cy="64" fill="url(#c)" r="26.71"/><circle cx="63.99" cy="64" fill="#fefce9" r="8.01"/><path d="m110.04 18.25.35-8.44c.16-3.8-3.22-6.49-6.97-5.55l-6.96 1.73c-2.4.6-4.32 2.55-4.87 4.96l-7.59 33.34.06-.03 26-26z" fill="#09bcd4"/><path d="m110.05 18.25 8.44-.35c3.8-.16 6.49 3.22 5.55 6.97l-1.73 6.96c-.6 2.4-2.55 4.32-4.96 4.87l-33.34 7.59.03-.06 26-26z" fill="#38a4dd"/><path d="m65.32 65.13c-1.4 1.25-3.35-.7-2.11-2.1l37.53-41.45c1.65-1.65 4.33-1.65 5.98 0s1.65 4.33 0 5.98z" fill="#1b87c9"/><path d="m104.91 6.07c.99 0 1.89.37 2.54 1.05.65.67.98 1.6.94 2.61l-.35 8.42c-.02.39.08.77.27 1.09.09.15.19.28.31.4.37.38.89.61 1.43.61h.08l8.42-.35h.17c1.12 0 2.1.46 2.75 1.29.68.86.9 2.03.61 3.19l-1.73 6.96c-.41 1.65-1.8 3.02-3.46 3.4l-27.64 6.3c-.34.08-.65.24-.9.47l-16.68 15.16 15.1-16.68c.23-.25.39-.56.47-.9l6.31-27.7c.38-1.66 1.74-3.05 3.4-3.46l6.96-1.73c.33-.09.67-.13 1-.13m0-2c-.49 0-.99.06-1.49.19l-6.96 1.73c-2.4.6-4.32 2.55-4.87 4.96l-6.31 27.7-22.07 24.37c-.97 1.09-.01 2.5 1.12 2.5.33 0 .67-.12.98-.4l24.39-22.12 27.64-6.3c2.4-.55 4.36-2.47 4.96-4.87l1.73-6.96c.91-3.67-1.64-6.97-5.3-6.97-.08 0-.17 0-.26.01l-8.42.35h-.02v-.02l.35-8.42c.14-3.3-2.36-5.75-5.47-5.75z" fill="#434343" opacity=".2"/></svg>
         </div>
     """, unsafe_allow_html=True)
     
@@ -42,7 +45,8 @@ def main():
         "Geographic Distribution": show_geographic_analysis,
         "Temporal Analysis": show_temporal_analysis,
         "Category & Market Analysis": show_category_analysis,
-        "Correlation Explorer": show_correlation_analysis
+        "Correlation Explorer": show_correlation_analysis,
+        "About Us":show_about_page,
     }
     
     # Page selection
@@ -138,10 +142,28 @@ def main():
     pages[selection](df_filtered)
     
     # Footer
-    st.sidebar.markdown("---")
+    st.sidebar.markdown("---")    
     st.sidebar.info(
-        "This interactive dashboard analyzes startup funding data. "
-        "Use the filters to explore different aspects of the startup ecosystem."
+        """
+        🏆 **DataSculpt: The Data Science Hackathon!**  
+        *"Sculpt your data, shape your future!"*
+
+        **Team QuantumQueries presents:**  
+        🚀 *Startup Insights Explorer*  
+
+        **Our Mission:**  
+        Transform messy startup data into:  
+        - 💡 Actionable business insights  
+        - 🌍 Geographic investment trends  
+        - 📈 Funding pattern identification  
+
+        **Hackathon Highlights:**          
+        • 100% Python (Pandas + Streamlit)  
+        • 8+ interactive visualizations  
+        • Real-time data processing  
+
+        *"From raw data to boardroom decisions"*
+        """
     )
 
 if __name__ == "__main__":

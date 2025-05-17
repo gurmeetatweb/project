@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 def set_page_config():
     st.set_page_config(
         page_title="Startup Ecosystem Analysis",
-        page_icon="📊",
+        page_icon="./favicon.ico",
         layout="centered",        
         initial_sidebar_state="expanded",        
     )

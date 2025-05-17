@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from data_processor import filter_country
+
 from utils import (
     display_metric_row, 
     format_large_number, 
@@ -45,8 +45,7 @@ def show_overview(df):
     Args:
         df (pd.DataFrame): Filtered dataframe
     """
-    # Filter for India
-    df = filter_country(df,True)
+    
     st.title("Startup Ecosystem Overview")
     st.write("This dashboard provides insights into the global startup ecosystem based on funding, geographic distribution, and industry trends.")
     

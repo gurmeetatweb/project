@@ -8,10 +8,10 @@ from datetime import datetime
 @st.cache_data
 def load_data():
     """
-    Load and preprocess the startup dataset.
-    
+    Loads the startup dataset, handles missing values, converts data types, and performs initial cleaning.
+
     Returns:
-        pd.DataFrame: Preprocessed dataframe
+        pd.DataFrame: The preprocessed DataFrame.
     """
     # Check if data file exists
     data_file = './data/investments_VC.csv'
@@ -37,57 +37,7 @@ def load_data():
             if col in df.columns:
                 # Remove commas and convert to numeric
                 df[col] = df[col].astype(str).str.replace(',', '').astype(float)
-     # Check if data file exists
-    state_file = './data/city_state_mapping.csv'
-    
-    df_state = pd.read_csv(state_file)
-    
-
-    master_list = [
-        'Arunachal Pradesh', 'Assam', 'Chandigarh', 'Karnataka', 'Manipur',
-        'Meghalaya', 'Mizoram', 'Nagaland', 'Punjab', 'Rajasthan', 'Sikkim',
-        'Tripura', 'Uttarakhand', 'Telangana', 'Bihar', 'Kerala', 'Madhya Pradesh',
-        'Andaman & Nicobar', 'Gujarat', 'Lakshadweep', 'Odisha',
-        'Dadra and Nagar Haveli and Daman and Diu', 'Ladakh', 'Jammu & Kashmir',
-        'Chhattisgarh', 'Delhi', 'Goa', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
-        'Tamil Nadu', 'Uttar Pradesh', 'West Bengal', 'Andhra Pradesh', 'Puducherry',
-        'Maharashtra'
-    ]
-    '''
-    # First load the JSON as a dictionary
-    with open(state_file, 'r') as f:
-        state_file = dp json.load(f)
-
-    # Then convert to DataFrame
-    df_state = pd.DataFrame(list(state_data.items()), columns=['region', 'state'])
-
-    city_state_map = dict(zip(df_state["region"], df_state["state"]))
-    #df_city_state_map = pd.DataFrame.from_dict(city_state_map, orient='index').reset_index()
-
-    #df_city_state_map.columns = ['region', 'state']
-    # Get the resolver function
-    resolver_func = get_resolver(city_state_map, master_list)
-
-    #df_state_resolved[["region", "state"]] = df_state["region"].apply(get_resolver)
-    # 4. Apply resolver correctly - fixed version
-    resolved_data = df_state["region"].apply(resolver_func)
-
-    # 5. Convert to DataFrame properly
-    #result_df = pd.DataFrame(resolved_data.tolist(), columns=['region', 'state'])
-
-    # Convert the Series of Series to DataFrame
-    df_state_resolved = pd.DataFrame({
-        'region': resolved_data.apply(lambda x: x[0]),
-        'state': resolved_data.apply(lambda x: x[1])
-    })
-    '''
-    
-    df = pd.merge(
-        df,
-        df_state[['region', 'state']],  # Select only columns we need
-        on='region',
-        how='left'  # Keeps all rows from full_df even if no match in state_df
-    )                    
+             
     
     # Preprocess the data
     
@@ -95,40 +45,6 @@ def load_data():
     df = preprocess_data(df)
     
 
-    return df
-
-def get_resolver(city_state_map, master_states):
-    # Convert master_states to set for faster lookup
-    master_set = set(master_states) if not isinstance(master_states, set) else master_states
-    
-    def resolve_city_state(city):
-        if pd.isna(city):  # Handle NaN/None values
-            return pd.Series([None, None])
-            
-        city_str = str(city).strip()  # Clean the city name
-        
-        # Check for direct match
-        if city_str in city_state_map:
-            state = city_state_map[city_str]
-            if state in master_set:
-                return pd.Series([city_str, state])
-        
-        # Check for case-insensitive match if needed
-        lower_map = {k.lower(): v for k, v in city_state_map.items()}
-        if city_str.lower() in lower_map:
-            state = lower_map[city_str.lower()]
-            if state in master_set:
-                return pd.Series([city_str, state])
-        
-        # Return original city and None state if not found
-        return pd.Series([city_str, None])
-    
-    return resolve_city_state
-
-def filter_country(df,flag):
-    #flag = False
-    if flag==True:
-        df = df[df['country_code'].str.upper() == 'IND']
     return df
 
 def clean_data(df_uncleaned):
