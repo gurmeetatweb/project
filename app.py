@@ -109,7 +109,7 @@ def main():
         
         if "All" not in selected_status and selected_status:
             df_filtered = df_filtered[df_filtered['status'].isin(selected_status)]
-    ''''''
+    '''
     # Region/country filter
     if 'country_code' in df.columns and df['country_code'].notna().any():
         top_countries = df['country_code'].drop(index=df[df['country_code'] == 'Unknown'].index).value_counts().nlargest(10).index.tolist()
@@ -121,7 +121,7 @@ def main():
         
         if "All" not in selected_countries and selected_countries:
             df_filtered = df_filtered[df_filtered['country_code'].isin(selected_countries)]
-
+'''
     # Region/country filter
     if 'region' in df.columns and df['region'].notna().any():
         df_india = df[df['country_code'] == 'IND']
@@ -145,8 +145,12 @@ def main():
     st.sidebar.markdown("---")    
     st.sidebar.info(
         """
+        Hackathon Initiative by ![image](https://cdn.masaischool.com/masai-website/masai_dark_853075d7cd.png)
+        [![Masai Hackathon](https://img.shields.io/badge/Masai_School-Hackathon_Project-blue?style=flat&logo=masaischool)](https://masai-school.notion.site/StartUp-Investments-Analysis-3632556b9f614fc8a033328e70589bf0)
+        
         🏆 **DataSculpt: The Data Science Hackathon!**  
         *"Sculpt your data, shape your future!"*
+        
 
         **Team QuantumQueries presents:**  
         🚀 *Startup Insights Explorer*  
