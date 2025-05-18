@@ -109,19 +109,7 @@ def main():
         
         if "All" not in selected_status and selected_status:
             df_filtered = df_filtered[df_filtered['status'].isin(selected_status)]
-    '''
-    # Region/country filter
-    if 'country_code' in df.columns and df['country_code'].notna().any():
-        top_countries = df['country_code'].drop(index=df[df['country_code'] == 'Unknown'].index).value_counts().nlargest(10).index.tolist()
-        selected_countries = st.sidebar.multiselect(
-            "Countries",
-            options=["All"] + top_countries,
-            default=["All"]
-        )
-        
-        if "All" not in selected_countries and selected_countries:
-            df_filtered = df_filtered[df_filtered['country_code'].isin(selected_countries)]
-'''
+    
     # Region/country filter
     if 'region' in df.columns and df['region'].notna().any():
         df_india = df[df['country_code'] == 'IND']

@@ -37,14 +37,18 @@ The dashboard expects a CSV file with startup data containing columns such as:
 - `app.py`: Main application entry point
 - `data_processor.py`: Data loading and preprocessing
 - `utils.py`: Utility functions for visualization and formatting
-- `pages/`: Individual analysis pages
+- `app_pages/`: Individual analysis pages
   - `overview.py`: Key metrics and high-level insights
   - `funding_analysis.py`: Detailed funding patterns
   - `geographic_analysis.py`: Location-based insights
   - `temporal_analysis.py`: Time-based trends
   - `category_analysis.py`: Industry and market analysis
   - `correlation_analysis.py`: Variable relationships and patterns
+  - `about.py`: Team introduction
 
 ### Sample Data
 
-If no data file is provided, the application will generate sample data for demonstration purposes.
+   ![Dataset Used](https://www.kaggle.com/datasets/arindam235/startup-investments-crunchbase/data)
+
+### Project Details
+   ![Masai Hackathon](https://masai-school.notion.site/StartUp-Investments-Analysis-3632556b9f614fc8a033328e70589bf0)
