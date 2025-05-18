@@ -1,10 +1,26 @@
 import streamlit as st
 from PIL import Image
 import os
+
+# 1. Create properly sized QR code
+def generate_qr(url, size=150, border=1):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=border,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    return img
+
 def show_about_page(df):
     
     
+
     st.title("About the Developer")
+    
     
     
 
@@ -26,6 +42,8 @@ def show_about_page(df):
         into actionable insights. Specializing in Python, Machine Learning, and Cloud Technologies.
         """)
     
+    
+
     # Contact Information
     st.subheader("Contact Information")
     st.write("📧 Email: [gurmeetatweb@gmail.com](mailto:gurmeetatweb@gmail.com)")
