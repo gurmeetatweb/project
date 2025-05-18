@@ -31,9 +31,7 @@ def set_page_config():
         h1, h2, h3 {
             color: #2c3e50;
         }
-        .stSidebar {
-            background-color: #ffffff;
-        }
+        
         .metric-card {
             background-color: white;
             border-radius: 5px;

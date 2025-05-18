@@ -21,7 +21,7 @@ def main():
     
 
     # Sidebar navigation
-    st.sidebar.title("Startup Analysis Dashboard")
+    
 
     # Add logo/icon
     st.sidebar.markdown("""
@@ -38,7 +38,7 @@ def main():
         </div>
         
     """, unsafe_allow_html=True)
-    
+    st.sidebar.title("Startup Analysis Dashboard")
     # Navigation options
     pages = {
         "Overview": show_overview,
