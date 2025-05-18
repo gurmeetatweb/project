@@ -48,7 +48,7 @@ The dashboard expects a CSV file with startup data containing columns such as:
 
 ### Sample Data
 
-   ![Dataset Used](https://www.kaggle.com/datasets/arindam235/startup-investments-crunchbase/data)
+- [StartUp Investments Analysis Dataset](https://www.kaggle.com/datasets/arindam235/startup-investments-crunchbase/data)
 
 ### Project Details
-   ![Masai Hackathon](https://masai-school.notion.site/StartUp-Investments-Analysis-3632556b9f614fc8a033328e70589bf0)
+- [Masai Hackathon](https://masai-school.notion.site/StartUp-Investments-Analysis-3632556b9f614fc8a033328e70589bf0)

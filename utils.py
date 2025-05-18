@@ -16,6 +16,8 @@ def set_page_config():
         layout="centered",        
         initial_sidebar_state="expanded",        
     )
+
+    
     
     # Custom CSS
     st.markdown("""
@@ -30,7 +32,7 @@ def set_page_config():
             color: #2c3e50;
         }
         .stSidebar {
-            background-color: #1E1E1E;
+            background-color: #ffffff;
         }
         .metric-card {
             background-color: white;
